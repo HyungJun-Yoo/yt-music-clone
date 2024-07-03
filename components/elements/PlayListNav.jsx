@@ -10,7 +10,7 @@ const PlayListNav = ({ playlist }) => {
   return (
     <li className='mx-3 px-4 h-[56px] flex flow-row justify-between items-center hover:bg-neutral-700 rounded-lg group'>
       <div>
-        <div className='text-[14px]'>{playlistName}</div>
+        <div className='text-[14px] line-clamp-2'>{playlistName}</div>
         <div className='text-[12px] text-neutral-500'>{owner}</div>
       </div>
 
