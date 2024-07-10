@@ -18,6 +18,8 @@ import {
 import Logo from './elements/Logo'
 import Navigator from './elements/Navigator'
 import { cn } from '@/lib/utils'
+import { usePathname } from 'next/navigation'
+import useUIState from '@/hooks/useUIState'
 
 const HeaderDrawer = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -25,7 +27,7 @@ const HeaderDrawer = ({ children }) => {
   return (
     <Drawer direction='left' open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger>{children}</DrawerTrigger>
-      <DrawerContent className='w-[240px] h-full'>
+      <DrawerContent className='h-full w-[240px]'>
         {/* 로고 */}
         {/* 네비게이션 + 재생목록 */}
         <div className='py-3'>
@@ -45,6 +47,9 @@ const HeaderDrawer = ({ children }) => {
 }
 
 const Header = ({ children }) => {
+  const { headerImageSrc } = useUIState()
+
+  const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
   const headRef = useRef()
 
@@ -64,28 +69,33 @@ const Header = ({ children }) => {
   }, [])
 
   return (
-    <header ref={headRef} className='relative overflow-y-auto w-full h-full'>
-      {/* bgSection */}
-      <section className='absolute top-0 w-full'>
-        <div className='relative h-[400px] w-full'>
-          <Image
-            alt='mediaItem'
-            className='object-cover'
-            fill
-            src='https://images.unsplash.com/photo-1549272322-2329561092de'
-          />
-          <div className='absolute h-[400px] top-0 bg-gray-800 opacity-40 w-full'></div>
-          <div className='absolute h-[400px] top-0 bg-gradient-to-t from-gray-800 w-full'></div>
-        </div>
-      </section>
+    <header ref={headRef} className='relative h-full w-full overflow-y-auto'>
+      {/* 홈인 경우에만 bgSection */}
+      {pathname === '/' && (
+        <section className='absolute top-0 w-full'>
+          <div className='relative h-[400px] w-full'>
+            <Image
+              alt='mediaItem'
+              className='object-cover'
+              fill
+              src={
+                headerImageSrc ||
+                'https://images.unsplash.com/photo-1549272322-2329561092de'
+              }
+            />
+            <div className='absolute top-0 h-[400px] w-full bg-gray-800 opacity-40'></div>
+            <div className='absolute top-0 h-[400px] w-full bg-gradient-to-t from-gray-800'></div>
+          </div>
+        </section>
+      )}
 
       {/* searchSection */}
       <section
-        className={cn('sticky top-0 left-0 z-10', isScrolled && 'bg-black')}
+        className={cn('sticky left-0 top-0 z-10', isScrolled && 'bg-black')}
       >
         <PagePadding>
-          <div className='h-[64px] flex flex-row justify-between items-center'>
-            <article className='h-[42px] min-w-[480px] hidden lg:flex flex-row items-center bg-[rgba(0,0,0,.14)] rounded-2xl px-[16px] gap-[16px] border border-neutral-500'>
+          <div className='flex h-[64px] flex-row items-center justify-between'>
+            <article className='hidden h-[42px] min-w-[480px] flex-row items-center gap-[16px] rounded-2xl border border-neutral-500 bg-[rgba(0,0,0,.14)] px-[16px] lg:flex'>
               <div>
                 <FiSearch size={24} />
               </div>
@@ -100,7 +110,7 @@ const Header = ({ children }) => {
                 <Logo />
               </article>
             </HeaderDrawer>
-            <article className='flex flex-row gap-6 items-center '>
+            <article className='flex flex-row items-center gap-6'>
               <FaChromecast size={26} className='cursor-pointer' />
               <UserIcon />
             </article>

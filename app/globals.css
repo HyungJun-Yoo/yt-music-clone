@@ -85,3 +85,24 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* 스크롤 바 전체 */
+::-webkit-scrollbar {
+  height: 8px; /* 스크롤 바의 높이 */
+}
+
+/* 스크롤 바 트랙 */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* 트랙의 배경색 */
+  border-radius: 10px; /* 트랙의 둥근 모서리 */
+}
+
+/* 스크롤 바 핸들 */
+::-webkit-scrollbar-thumb {
+  background: #888; /* 핸들의 색상 */
+  border-radius: 10px; /* 핸들의 둥근 모서리 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* 핸들에 마우스를 올렸을 때 색상 */
+}
